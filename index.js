@@ -102,17 +102,83 @@ var images = [
   var currentPoster;
   
   // event listeners go here 👇
-  
+  let posterImg = document.querySelector('.poster-img');
+  let posterTitle = document.querySelector('.poster-title');
+  let posterQuote = document.querySelector('.poster-quote');
+
+  let savePoster = document.querySelector('.save-poster');
+  let showSaved = document.querySelector('.show-saved');
+  let showRandom = document.querySelector('.show-random');
+  let showForm = document.querySelector('.show-form');
+
+  let showPosterBtn = document.querySelector('.make-poster');
+  let nvmBtn = document.querySelector('.show-main');
+  let backMainBtn = document.querySelector('.back-to-main');
+
+  let posterFormSection = document.querySelector('.poster-form');
+  let mainPosterSection = document.querySelector('.main-poster');
+  let savedPosterSection = document.querySelector('.saved-posters');
+
   // functions and event handlers go here 👇
+  
   // (we've provided two to get you started)!
   function getRandomIndex(array) {
     return Math.floor(Math.random() * array.length);
   }
-  
   function createPoster(imageURL, title, quote) {
     return {
       id: Date.now(), 
       imageURL: imageURL, 
       title: title, 
       quote: quote}
-  }
+}
+// page loads with a random poster
+generateRandomPoster();
+// random poster button shows a random poster
+showRandom.addEventListener('click', generateRandomPoster)
+// generate a random poster with random values
+  function generateRandomPoster(){
+    let randomIndexTitles = getRandomIndex(titles);
+    let randomIndexImages = getRandomIndex(images);
+    let randomIndexQuotes = getRandomIndex(quotes);
+    currentPoster = createPoster(images[randomIndexImages], titles[randomIndexTitles], quotes[randomIndexQuotes]);
+    posterImg.src = images[randomIndexImages];
+    posterQuote.innerText = quotes[randomIndexQuotes];
+    posterTitle.innerText = titles[randomIndexTitles];
+}
+// when make your own poster button is clicked show form and hide the main section
+showForm.addEventListener('click', showFormHideMain);
+function showFormHideMain(){
+    posterFormSection.classList.remove('hidden');
+    mainPosterSection.classList.add('hidden');
+}
+showSaved.addEventListener('click', showSavedPosters);
+function showSavedPosters(){
+    mainPosterSection.classList.add('hidden');
+    savedPosterSection.classList.remove('hidden');
+}
+backMainBtn.addEventListener('click', goBack);
+function goBack(){
+    mainPosterSection.classList.remove('hidden');
+    savedPosterSection.classList.add('hidden');
+    posterFormSection.classList.add('hidden');
+}
+nvmBtn.addEventListener('click', goBack);
+
+// create new poster with inputs
+showPosterBtn.addEventListener('click', newPoster);
+function newPoster(event){
+    event.preventDefault();
+    let imgInput = document.querySelector('#poster-image-url').value;
+    let titleInput = document.querySelector('#poster-title').value;
+    let quoteInput = document.querySelector('#poster-quote').value;
+    currentPoster = createPoster(imgInput, titleInput, quoteInput);
+    savedPosters.push(currentPoster);
+    goBack();
+    updatePoster();
+}
+function updatePoster(){
+    posterImg.src = currentPoster.imageURL;
+    posterTitle.innerText = currentPoster.title;
+    posterQuote.innerText = currentPoster.quote;
+}
