@@ -182,3 +182,15 @@ function updatePoster(){
     posterTitle.innerText = currentPoster.title;
     posterQuote.innerText = currentPoster.quote;
 }
+savePoster.addEventListener('click', posterSave);
+function posterSave(){
+    savedPosters.push(currentPoster);
+    console.log(savedPosters);
+}
+// // deal with duplicates
+// let duplicates = 0;
+// for (of savedPosters){
+//     if (poster.quote === savedPoster.quote && poster.title === savedPoster.title && poster.imageURL === savedPoster.imageURL){
+//         console.log("theres a duplicate");
+//     }
+// }
