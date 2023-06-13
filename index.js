@@ -156,6 +156,7 @@ showSaved.addEventListener('click', showSavedPosters);
 function showSavedPosters(){
     mainPosterSection.classList.add('hidden');
     savedPosterSection.classList.remove('hidden');
+    displayPosters();
 }
 backMainBtn.addEventListener('click', goBack);
 function goBack(){
@@ -182,15 +183,32 @@ function updatePoster(){
     posterTitle.innerText = currentPoster.title;
     posterQuote.innerText = currentPoster.quote;
 }
+// when user clicks save this poster btn it adds it to savedPosters []
 savePoster.addEventListener('click', posterSave);
 function posterSave(){
-    savedPosters.push(currentPoster);
+    let isDuplicate = false;
+    for (const poster of savedPosters) {
+      if (poster.imageURL === currentPoster.imageURL && poster.quote === currentPoster.quote && poster.title === currentPoster.title){
+        isDuplicate = true;
+        break;
+  }
+} 
+    if (!isDuplicate){
+        savedPosters.push(currentPoster);
+    }
     console.log(savedPosters);
 }
-// // deal with duplicates
-// let duplicates = 0;
-// for (of savedPosters){
-//     if (poster.quote === savedPoster.quote && poster.title === savedPoster.title && poster.imageURL === savedPoster.imageURL){
-//         console.log("theres a duplicate");
-//     }
-// }
+// show the savedPosters[] on the show saved posters section
+function displayPosters(){
+  savedPosterSection.innerHTML = '';
+  for (const poster of savedPosters) {
+    let posterHtml = `
+    <article>
+      <img src="${poster.imageURL} alt="poster img"
+      <h2>${poster.title}</h2>
+      <h4>${poster.quote}</h4>
+    </article>`;
+    savedPosterSection.innerHTML += posterHtml;
+  }
+
+}
